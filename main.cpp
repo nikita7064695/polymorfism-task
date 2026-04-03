@@ -2,23 +2,18 @@
 
 class A {
 public:
-    ~A() { std::cout << "~A" << std::endl; }
-    virtual void foo() { std::cout << "A foo" << std::endl; }
+    A() { func(); }
+    virtual void func() { std::cout << "A\n"; }
 };
 
 class B : public A {
 public:
-    ~B() { std::cout << "~B" << std::endl; }
-    virtual void foo() { std::cout << "B foo" << std::endl; }
+    B() { func(); }
+    void func() override { std::cout << "B\n"; }
 };
-
-/*
- * Так как происходит обращение через указатель, вызовется только деструктор
- * для объекта класса А, для В не вызовется и произойдет утечка памяти
- */
-
+// Выводится A потом B, как я понимаю, потому что B не может существовать без A
+// TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 int main() {
     A* a = new B();
-    a->foo();
     delete a;
 }
